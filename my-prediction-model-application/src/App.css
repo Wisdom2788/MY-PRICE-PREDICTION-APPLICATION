@@ -183,6 +183,10 @@ body {
   cursor: pointer;
 }
 
+:hover.tab-button {
+  background-color: #1E90FF;
+}
+
 .tab-button.active {
   border-color: var(--accent-color);
   color: var(--accent-color);
