@@ -53,6 +53,17 @@ body {
   color: var(--muted-text);
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.welcome-text {
+  font-weight: 600;
+  color: var(--text-color);
+}
+
 /* Panels */
 .panel, .auth-panel, .chart-panel, .submit-panel {
   background: var(--panel-bg);
