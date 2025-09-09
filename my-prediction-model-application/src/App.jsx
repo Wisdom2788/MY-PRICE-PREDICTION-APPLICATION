@@ -25,6 +25,11 @@ export default function App() {
       {/* Header with product name and tagline. Pass user and sign-out handler */}
       <Header user={user} onSignOut={handleSignOut} />
 
+      {/* Personalized greeting appears just below the header; sign-out remains in the header */}
+      {user && (
+        <div className="user-greeting">Welcome back {user.firstName}</div>
+      )}
+
       {/* Auth section – show until the user signs in. Register is also available here. */}
       {!user && (
         <AuthForms onAuthSuccess={(u) => setUser(u || { firstName: 'User' })} />
