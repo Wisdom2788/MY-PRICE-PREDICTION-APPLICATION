@@ -1,35 +1,51 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// App: Main application shell that composes all core UI pieces
+// Uses React hooks to manage simple application state (auth + commodity selection)
 
-function App() {
-  const [count, setCount] = useState(0)
+import { useState } from 'react';
+import './App.css';
+import Header from './components/Header.jsx';
+import AuthForms from './components/AuthForms.jsx';
+import CommoditySelector from './components/CommoditySelector.jsx';
+import PriceChart from './components/PriceChart.jsx';
+import PriceSubmitForm from './components/PriceSubmitForm.jsx';
+
+export default function App() {
+  // Track if user is authenticated (MVP: set true on successful sign-in)
+  const [isAuthed, setIsAuthed] = useState(false);
+  // Currently selected commodity for charting
+  const [commodity, setCommodity] = useState('Rice');
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div className="app-shell">
+      {/* Header with product name and tagline */}
+      <Header />
 
-export default App
+      {/* Auth section – show until the user signs in. Register is also available here. */}
+      {!isAuthed && (
+        <AuthForms onAuthSuccess={() => setIsAuthed(true)} />
+      )}
+
+      {/* Main content – visible after sign-in for this MVP */}
+      {isAuthed && (
+        <>
+          <section className="panel">
+            <div className="panel-header">
+              <h2 className="panel-title">Select Commodity</h2>
+              <p className="panel-subtitle">Choose a commodity to view its price forecast</p>
+            </div>
+            <CommoditySelector value={commodity} onChange={setCommodity} />
+          </section>
+
+          <PriceChart commodity={commodity} />
+
+          <PriceSubmitForm />
+        </>
+      )}
+
+      {/* Footer note about API placeholders to guide integrators */}
+      <footer className="site-footer">
+        <p className="footer-note">Note: This MVP uses placeholder API endpoints. Configure your backend URLs in src/config.js.</p>
+      </footer>
+    </div>
+  );
+}
