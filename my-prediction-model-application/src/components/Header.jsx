@@ -6,7 +6,7 @@
 export default function Header({ user, onSignOut }) {
   return (
     <header className="site-header">
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
+      <div className="header-inner">
         <div>
           {/* h1 defines the primary title of the page */}
           <h1 className="brand-title">Price Predictor for Nigerian Marketers</h1>
