@@ -14,10 +14,9 @@ export default function Header({ user, onSignOut }) {
           <p className="brand-tagline">Forecast commodity prices to plan ahead. Powered by AI and Sui blockchain</p>
         </div>
 
-        {/* If a user is signed in, show a welcome message and sign-out button */}
+        {/* If a user is signed in, show only the sign-out button in the header to keep the header neat */}
         {user && (
           <div className="header-actions">
-            <span className="welcome-text">Welcome back {user.firstName}</span>
             <button className="tab-button" onClick={() => onSignOut?.()}>Sign Out</button>
           </div>
         )}
