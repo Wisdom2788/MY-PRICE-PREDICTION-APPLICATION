@@ -60,10 +60,14 @@ export default function AuthForms({ onAuthSuccess }) {
     }
     setLoading(true);
     try {
-      await signInUser({ email: signInForm.email.trim(), password: signInForm.password });
+      const res = await signInUser({ email: signInForm.email.trim(), password: signInForm.password });
       setSuccess('Signed in successfully.');
-      // Notify parent about successful auth so it can reveal app features
-      onAuthSuccess?.();
+      // If the backend returned a user object, pass it to parent so we can show a personalized greeting
+      if (res?.user) {
+        onAuthSuccess?.(res.user);
+      } else {
+        onAuthSuccess?.();
+      }
     } catch (err) {
       setError(err.message || 'Sign in failed.');
     } finally {
