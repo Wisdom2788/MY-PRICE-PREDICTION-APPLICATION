@@ -35,9 +35,41 @@ function mockResponseFor(url, options = {}) {
     return Promise.resolve({ status: 'ok' });
   }
 
-  // auth endpoints: simple success for register/sign-in
-  if (u.pathname.endsWith('/auth/register') || u.pathname.endsWith('/auth/sign-in')) {
-    return Promise.resolve({ status: 'ok' });
+  // Read request body if present (for auth/register/sign-in)
+  let body = {};
+  try {
+    body = options && options.body ? JSON.parse(options.body) : {};
+  } catch (e) {
+    /* ignore parse errors */
+  }
+
+  // auth: register - persist to localStorage for mock auth; sign-in - validate against stored users
+  if (u.pathname.endsWith('/auth/register')) {
+    const usersRaw = localStorage.getItem('mpp_users');
+    const users = usersRaw ? JSON.parse(usersRaw) : {};
+    const email = (body.email || '').toLowerCase();
+    const firstName = body.firstName || '';
+    const lastName = body.lastName || '';
+    const password = body.password || '';
+    if (!email || !password) {
+      return Promise.reject(new Error('Missing email or password in registration.'));
+    }
+    users[email] = { firstName, lastName, email, password };
+    localStorage.setItem('mpp_users', JSON.stringify(users));
+    return Promise.resolve({ status: 'ok', user: { firstName, lastName, email } });
+  }
+
+  if (u.pathname.endsWith('/auth/sign-in')) {
+    const usersRaw = localStorage.getItem('mpp_users');
+    const users = usersRaw ? JSON.parse(usersRaw) : {};
+    const email = (body.email || '').toLowerCase();
+    const password = body.password || '';
+    const found = users[email];
+    if (found && found.password === password) {
+      const { firstName, lastName } = found;
+      return Promise.resolve({ status: 'ok', user: { firstName, lastName, email } });
+    }
+    return Promise.reject(new Error('Invalid email or password.'));
   }
 
   // default mock: empty object
