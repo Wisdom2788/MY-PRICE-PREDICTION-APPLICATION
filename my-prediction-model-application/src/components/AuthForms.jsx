@@ -28,14 +28,20 @@ export default function AuthForms({ onAuthSuccess }) {
     }
     setLoading(true);
     try {
-      await registerUser({
+      const res = await registerUser({
         firstName: registerForm.firstName.trim(),
         lastName: registerForm.lastName.trim(),
         email: registerForm.email.trim(),
         password: registerForm.password,
       });
-      setSuccess('Registration successful. You can now sign in.');
-      setMode('signIn');
+      // If backend (or mock) returned a user object, inform parent and mark as authed
+      if (res?.user) {
+        setSuccess('Registration successful. Signed in automatically.');
+        onAuthSuccess?.(res.user);
+      } else {
+        setSuccess('Registration successful. You can now sign in.');
+        setMode('signIn');
+      }
     } catch (err) {
       setError(err.message || 'Registration failed.');
     } finally {
