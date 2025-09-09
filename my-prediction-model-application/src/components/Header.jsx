@@ -1,0 +1,26 @@
+// Header component: Displays the application name, tagline, optional user greeting and sign-out
+// Props:
+// - user: optional object with { firstName } used to personalize the greeting
+// - onSignOut: optional function called when the user clicks sign-out
+
+export default function Header({ user, onSignOut }) {
+  return (
+    <header className="site-header">
+      <div className="header-inner">
+        <div>
+          {/* h1 defines the primary title of the page */}
+          <h1 className="brand-title">Price Predictor for Nigerian Marketers</h1>
+          {/* p is used for the descriptive tagline under the title */}
+          <p className="brand-tagline">Forecast commodity prices to plan ahead. Powered by AI and Sui blockchain</p>
+        </div>
+
+        {/* If a user is signed in, show only the sign-out button in the header to keep the header neat */}
+        {user && (
+          <div className="header-actions">
+            <button className="tab-button" onClick={() => onSignOut?.()}>Sign Out</button>
+          </div>
+        )}
+      </div>
+    </header>
+  );
+}
