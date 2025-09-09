@@ -178,14 +178,11 @@ body {
   border: 1px solid var(--border);
   background: #fff;
   color: var(--text-color);
-  border-radius: 8px;
+  border-radius: 9px;
   padding: 8px 12px;
   cursor: pointer;
 }
 
-:hover.header-actions,.tab-button {
-  background-color: #1E90FF;
-}
 
 .tab-button.active {
   border-color: var(--accent-color);
