@@ -183,7 +183,7 @@ body {
   cursor: pointer;
 }
 
-:hover.tab-button {
+:hover.header-actions,.tab-button {
   background-color: #1E90FF;
 }
 
