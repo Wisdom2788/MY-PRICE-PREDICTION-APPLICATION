@@ -10,23 +10,28 @@ import PriceChart from './components/PriceChart.jsx';
 import PriceSubmitForm from './components/PriceSubmitForm.jsx';
 
 export default function App() {
-  // Track if user is authenticated (MVP: set true on successful sign-in)
-  const [isAuthed, setIsAuthed] = useState(false);
+  // Store the current authenticated user object (null when not signed in)
+  const [user, setUser] = useState(null);
   // Currently selected commodity for charting
   const [commodity, setCommodity] = useState('Rice');
 
+  function handleSignOut() {
+    // Clear user state on sign-out
+    setUser(null);
+  }
+
   return (
     <div className="app-shell">
-      {/* Header with product name and tagline */}
-      <Header />
+      {/* Header with product name and tagline. Pass user and sign-out handler */}
+      <Header user={user} onSignOut={handleSignOut} />
 
       {/* Auth section – show until the user signs in. Register is also available here. */}
-      {!isAuthed && (
-        <AuthForms onAuthSuccess={() => setIsAuthed(true)} />
+      {!user && (
+        <AuthForms onAuthSuccess={(u) => setUser(u || { firstName: 'User' })} />
       )}
 
       {/* Main content – visible after sign-in for this MVP */}
-      {isAuthed && (
+      {user && (
         <>
           <section className="panel">
             <div className="panel-header">
